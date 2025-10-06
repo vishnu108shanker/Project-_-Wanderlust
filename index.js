@@ -44,35 +44,44 @@ mongoose.connect(process.env.DB_URL, {
 
 
 
-const mongoStore = MongoStore.create({
-    mongoUrl: process.env.DB_URL ,
-    touchAfter: 24*60*60 ,
-    crypto: {
-        secret: "it's a secret"
-    }
-}) ;
+// ===== SESSION STORE (connect-mongo) =====
+const mongoUrl = process.env.DB_URL;
+const sessionSecret = process.env.SESSION_SECRET || "this_should_be_changed_in_prod";
 
-mongoStore.on("error" , function(e){
-    console.log("Session store error" , e) ;
+if (!mongoUrl) {
+  console.error("WARNING: process.env.DB_URL is not defined. Sessions will fail without a DB URL.");
 }
-) ;
 
+const store = MongoStore.create({
+  mongoUrl,                     // required: Atlas connection string
+  ttl: 14 * 24 * 60 * 60,       // session lifetime in seconds (14 days)
+  touchAfter: 24 * 3600,        // time period in seconds to resave session only if changed
+  crypto: {
+    secret: sessionSecret       // used to sign/encrypt session data
+  }
+});
+
+store.on("error", function (err) {
+  console.error("Session store error:", err);
+});
+
+// session options
 const sessionOptions = {
-    store: mongoStore ,
-    secret:"it's a secret" ,
-    resave: false , 
-    saveUninitialized: true,
-      cookie:{
-        expires: Date.now() + 1000*60*60*24*3 ,
-        maxAge: 1000*60*60*24*3 ,
-        httpOnly: true 
-      } ,   
-} 
+  store,
+  name: "wanderlust.sid",                 // custom cookie name (optional)
+  secret: sessionSecret,
+  resave: false,                          // don't resave unchanged sessions
+  saveUninitialized: false,               // don't create session until something stored
+  cookie: {
+    httpOnly: true,
+    // secure: true,                      // enable when using HTTPS in production (Render provides HTTPS)
+    maxAge: 1000 * 60 * 60 * 24 * 3      // 3 days
+  }
+};
 
+app.use(session(sessionOptions));
+app.use(flash());
 
-
-app.use(session(sessionOptions)) ;
-app.use(flash()) ;
 
 app.use(passport.initialize()) ;
 app.use(passport.session()) ;
