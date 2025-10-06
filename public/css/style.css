@@ -1,0 +1,236 @@
+/* ---------- GLOBAL ---------- */
+:root{
+  --primary: #FF385C; /* Airbnb-like pink/red */
+  --muted: #6b6b6b;
+  --card-shadow: 0 8px 24px rgba(16,24,40,0.08);
+  --bg: #f7f7f7;
+}
+
+*{box-sizing:border-box}
+body{
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background-color: var(--bg);
+  color: #111827;
+  margin: 0;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- NAVBAR tweaks (keeps current behavior) ---------- */
+nav.navbar {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  box-shadow: 0 1px 0 rgba(16,24,40,0.04);
+  padding: 0 1rem;
+}
+
+/* small fixes for brand icon */
+.fa-compass{
+  color: var(--primary);
+  font-size: 26px;
+}
+
+/* ---------- HERO ---------- */
+.hero-section{
+  position: relative;
+  height: 380px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  background-image: url('https://images.unsplash.com/photo-1501117716987-c8e68a736a3f?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=8f6f0faa394b6d3f2ed3c4465e0b7b6f');
+  background-size: cover;
+  background-position: center;
+  color: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* dim overlay for readability */
+.hero-overlay{
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(8,10,15,0.35), rgba(8,10,15,0.35));
+}
+
+/* content wrapper */
+.hero-content{
+  position: relative;
+  z-index: 2;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+/* hero search */
+.hero-search {
+  background: rgba(255,255,255,0.95);
+  border-radius: 999px;
+  padding: 6px;
+  max-width: 760px;
+  box-shadow: var(--card-shadow);
+}
+
+.hero-search .form-control {
+  border: 0;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  height: 52px;
+  font-size: 1rem;
+  border-radius: 999px;
+}
+.hero-search .btn {
+  border-radius: 999px;
+}
+
+/* ---------- LISTING CARDS ---------- */
+.listing-card {
+  transition: transform .18s ease, box-shadow .18s ease;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(16,24,40,0.04);
+}
+
+/* image wrapper to keep aspect ratio */
+.img-wrap {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  background: #f1f1f1;
+}
+.img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* price badge on image */
+.price-badge {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  background: rgba(0,0,0,0.75);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* hover */
+.listing-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 14px 40px rgba(16,24,40,0.12);
+}
+
+/* card body spacing */
+.card-body { padding: 14px; }
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.text-muted.small { color: var(--muted); }
+
+/* rating */
+.rating {
+  color: #111827;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* ---------- FOOTER ---------- */
+footer {
+  background: #fff;
+  margin-top: 40px;
+  padding: 36px 0;
+  border-top: 1px solid rgba(16,24,40,0.06);
+}
+
+.f-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.f-info-socials i {
+  margin-right: 12px;
+  font-size: 18px;
+  color: #6b7280;
+}
+
+.f-info-links a {
+  text-decoration: none;
+  color: #374151;
+  margin-left: 12px;
+}
+
+/* small screens */
+@media (max-width: 768px) {
+  .hero-section { height: 280px; }
+  .hero-content { text-align: center; padding-left: 1rem; padding-right: 1rem; }
+  .f-info { flex-direction: column; text-align: center; gap: 8px; }
+  .hero-search { width: 100%; }
+}
+
+
+
+/* Auth / form card */
+.auth-card {
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* form labels */
+.form-label { font-weight: 600; font-size: .95rem; }
+
+/* make buttons consistent with site style */
+.btn-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+.btn-primary:hover { opacity: .95; }
+
+/* adjust small helpers */
+.invalid-feedback { font-size: .9rem; }
+
+
+
+/* Listing map container */
+#listing-map {
+  height: 400px;                 /* good height for detail view */
+  width: 100%;                  
+  margin-top: 25px;             
+  border-radius: 12px;          /* rounded corners */
+  border: 1px solid #ddd;       /* subtle border */
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);  /* soft shadow for depth */
+  transition: transform 0.2s ease;
+}
+
+#listing-map:hover {
+  transform: scale(1.02);       /* subtle zoom effect on hover */
+}
+
+/* Make map responsive */
+@media (max-width: 768px) {
+  #listing-map {
+    height: 300px;
+    margin-top: 20px;
+  }
+}
+
+/* Optional: popup style for Leaflet markers */
+.leaflet-popup-content-wrapper {
+  border-radius: 10px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.leaflet-popup-tip {
+  background: #fff !important;
+}

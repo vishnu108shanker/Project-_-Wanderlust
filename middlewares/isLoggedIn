@@ -1,0 +1,28 @@
+module.exports.isLoggedIn = (req, res, next) => {
+  if (req.isAuthenticated()) return next();
+
+  // Save the page they were trying to access
+  req.session.returnTo = req.originalUrl;
+
+  req.flash("error", "You must be signed in to do that!");
+  res.redirect("/login");
+};
+
+module.exports.saveRedirectUrl = (req, res, next) => {
+  if (req.session.returnTo) {
+    res.locals.redirectUrl = req.session.returnTo;
+  }
+  next();
+};
+
+
+const { reviewJoiSchema } = require("../joi_reviewSchema");
+module.exports.validateReview = (req, res, next) => {
+  const { error } = reviewJoiSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map(el => el.message).join(", ");
+    req.flash("error", msg);
+    return res.redirect("back");  // safely go back to listing page
+  }
+  next();
+};

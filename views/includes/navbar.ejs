@@ -1,0 +1,63 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+  <div class="container-fluid">
+    <!-- Airbnb-style Logo -->
+    <a class="navbar-brand d-flex align-items-center" href="/listings">
+      <i class="fa-solid fa-compass fa-2x text-danger me-2"></i>
+      <span class="fw-bold fs-5">WanderLust</span>
+    </a>
+
+    <!-- Toggler for mobile -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar Links -->
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      
+      <!-- Left side: Search bar -->
+      <form class="d-flex mx-auto" style="max-width: 600px;">
+        <input class="form-control me-2" type="search" placeholder="Search destinations" aria-label="Search">
+        <button class="btn btn-outline-secondary" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </form>
+
+      <!-- Right side: Links and buttons -->
+      <ul class="navbar-nav ms-auto align-items-center">
+
+          <!-- Language / Currency (static button for now) -->
+   <li class="nav-item me-2">
+  <a class="btn btn-outline-secondary" href="/listings">Home</a>
+</li>
+
+
+        <!-- Airbnb Your Home / Become a Host -->
+        <li class="nav-item me-2">
+          <a class="btn btn-outline-secondary rounded-pill" href="/listings/new">Wanderlust your home</a>
+        </li>
+
+      
+        <!-- SignUp / Login (if not logged in) -->
+        <% if(!currentuser){ %>
+        <li class="nav-item me-2">
+          <a class="btn btn-primary rounded-pill px-3" href="/signup">Sign Up</a>
+        </li>
+        <li class="nav-item me-2">
+          <a class="btn btn-outline-primary rounded-pill px-3" href="/login">Login</a>
+        </li>
+        <%}%>
+
+        <!-- Logout (if logged in) -->
+        <% if(currentuser){ %>
+        <li class="nav-item">
+          <a class="btn btn-outline-danger rounded-pill px-3" href="/logout">Logout</a>
+        </li>
+        <%}%>
+
+        <!-- Profile / Menu Icon -->
+        <li class="nav-item ms-2">
+          <button class="btn btn-outline-secondary rounded-circle"><i class="fa-solid fa-bars"></i></button>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>

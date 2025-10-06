@@ -1,0 +1,40 @@
+<% layout("layouts/boilerplate") %>
+
+
+<!-- FEATURED / GRID -->
+<section class="py-5">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="h4 fw-bold mb-0">Explore stays</h2>
+    </div>
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+      <% for (data of datum) { %>
+        <div class="col">
+          <a href="/listings/<%= data._id %>" class="text-decoration-none text-dark">
+            <div class="card listing-card h-100 border-0">
+              <div class="card-img-top img-wrap">
+                <img src="<%= data.image && data.image.url ? data.image.url : '/images/placeholder.jpg' %>" alt="Listing image" class="img-fluid w-100">
+                <div class="price-badge">$<%= data.price %></div>
+              </div>
+
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <h6 class="card-title mb-1"><%= data.title.length > 45 ? data.title.substring(0,45) + '...' : data.title %></h6>
+                    <p class="text-muted small mb-0"><i class="fa-solid fa-location-dot me-1"></i> <%= data.location ? data.location : 'Unknown' %></p>
+                  </div>
+                  <div class="text-end">
+                    <div class="rating">
+                      <i class="fa-solid fa-star"></i> <span class="small">4.8</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</section>
