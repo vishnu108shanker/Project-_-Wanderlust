@@ -120,10 +120,11 @@ const userRoutes = require('./ROUTERS/user');
 // }   
 
 
-// // root route
-// app.get('/' , (req , res) => {
-//     console.log("Root route accessed");
-//     res.send('Hello World') });
+// root route
+app.get('/' , (req , res) => {
+    console.log("Root route accessed");
+    res.redirect('/listings') ;
+  });
 
 // app.get("/demo" , async (req, res) => {
 //   let fakeUser = new User({username: "fakeUser" , email: "studs@gmail.com"}) ;
