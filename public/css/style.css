@@ -954,44 +954,60 @@ textarea.form-control { resize: vertical; min-height: 110px; }
 
 /* ── 15. FOOTER ───────────────────────────────────────────── */
 footer {
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  margin-top: 60px;
-  padding: 28px 0;
+  margin-top: auto; /* Push to bottom if content is short */
+  font-family: var(--font-sans);
 }
-.f-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  font-size: 0.85rem;
-  color: var(--gray-400);
-}
-.f-info-socials { display: flex; gap: 16px; }
-.f-info-socials a {
-  color: var(--gray-400);
-  font-size: 17px;
+.footer-link-hover {
   transition: color var(--transition-fast);
 }
-.f-info-socials a:hover { color: var(--gray-700); }
-.f-info-links { display: flex; gap: 16px; flex-wrap: wrap; }
-.f-info-links a {
-  color: var(--gray-500);
-  font-size: 0.83rem;
-  transition: color var(--transition-fast);
-}
-.f-info-links a:hover { color: var(--gray-800); text-decoration: underline; }
-.f-info .f-brand {
-  font-weight: var(--font-weight-semi);
-  color: var(--gray-500);
+.footer-link-hover:hover {
+  color: var(--gray-900) !important;
+  text-decoration: underline !important;
 }
 
-@media (max-width: 768px) {
-  .f-info { flex-direction: column; text-align: center; gap: 10px; }
-  .f-info-links { justify-content: center; }
-  .f-info-socials { justify-content: center; }
+/* EVIL LORD BADGE */
+.badge-evil-lord {
+  background: var(--surface);
+  border: 1.5px solid var(--border-strong) !important;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  box-shadow: var(--shadow-xs);
 }
+.badge-evil-lord:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-sm);
+  border-color: #E94057 !important;
+}
+.evil-text {
+  background: linear-gradient(135deg, #8A2387, #E94057, #F27121);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.3px;
+}
+
+/* SOCIAL ICONS (REAL PLATFORM COLORS) */
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--gray-100);
+  color: var(--gray-600);
+  font-size: 16px;
+  transition: all var(--transition-base);
+}
+.social-icon:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  color: white;
+}
+/* Brand Specific Hovers */
+.social-icon.facebook:hover { background: #1877F2; }
+.social-icon.instagram:hover { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+.social-icon.linkedin:hover { background: #0A66C2; }
+.social-icon.twitter:hover { background: #000000; }
 
 
 /* ── 16. ERROR PAGE ───────────────────────────────────────── */
