@@ -1,5 +1,6 @@
 const express = require('express') ;
 const app = express() ;
+app.set('trust proxy', 1); // Trust proxy for production deployments (e.g., Render, Heroku)
 const bodyParser = require('body-parser') ;
 const mongoose = require('mongoose') ;
 const path = require('path');
@@ -75,7 +76,7 @@ const sessionOptions = {
   saveUninitialized: false,               // don't create session until something stored
   cookie: {
     httpOnly: true,
-    // secure: true,                      // enable when using HTTPS in production (Render provides HTTPS)
+    secure: process.env.NODE_ENV === 'production', // true for HTTPS in production
     maxAge: 1000 * 60 * 60 * 24 * 3      // 3 days
   }
 };
