@@ -1,67 +1,124 @@
 <% layout("layouts/boilerplate") %>
 
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-lg-8">
-      <div class="card shadow-sm">
-        <div class="card-body p-4">
-          <h4 class="fw-bold mb-3">Create a new listing</h4>
-          <p class="text-muted small mb-4">Add details so guests know what to expect.</p>
+<div class="container mb-5">
+  <div class="listing-form-wrap">
+    
+    <div class="mb-4 text-center">
+      <h2>Create a new listing</h2>
+      <p class="text-muted">A few details to help guests understand what to expect.</p>
+    </div>
 
-          <form action="/listings" method="POST" novalidate class="needs-validation">
+    <!-- Fake Step Indicator UI -->
+    <div class="d-flex justify-content-center mb-5">
+      <div class="d-flex align-items-center gap-2">
+        <div class="rounded-pill bg-dark text-white d-flex align-items-center justify-content-center" style="width:28px;height:28px;font-size:12px;font-weight:700;">1</div>
+        <span class="fs-6 fw-bold">Basics</span>
+        
+        <div class="bg-secondary" style="width:40px;height:2px;opacity:0.3;margin:0 8px;"></div>
+        
+        <div class="rounded-pill bg-light text-muted border d-flex align-items-center justify-content-center" style="width:28px;height:28px;font-size:12px;font-weight:700;">2</div>
+        <span class="fs-6 fw-semi text-muted">Photos</span>
 
-            <div class="mb-3">
-              <label for="title" class="form-label">Title</label>
-              <input type="text" id="title" name="title" class="form-control form-control-lg" placeholder="Cozy apartment in city center" required>
-              <div class="invalid-feedback">Title is required.</div>
-            </div>
-
-            <div class="mb-3">
-              <label for="description" class="form-label">Description</label>
-              <textarea id="description" name="description" class="form-control" rows="4" placeholder="Short description" required></textarea>
-              <div class="invalid-feedback">Description is required.</div>
-            </div>
-
-            <div class="row g-3">
-              <div class="col-md-6">
-                <label for="price" class="form-label">Price per night (USD)</label>
-                <input type="number" id="price" name="price" class="form-control" placeholder="150" min="1" required>
-                <div class="invalid-feedback">Enter a valid price.</div>
-              </div>
-
-              <div class="col-md-6">
-                <label for="location" class="form-label">City / Location</label>
-                <input type="text" id="location" name="location" class="form-control" placeholder="e.g. Bengaluru, India" required>
-                <div class="invalid-feedback">Location is required.</div>
-              </div>
-            </div>
-
-            <div class="row g-3 mt-3">
-              <div class="col-md-6">
-                <label for="country" class="form-label">Country</label>
-                <input type="text" id="country" name="country" class="form-control" placeholder="India" required>
-                <div class="invalid-feedback">Country is required.</div>
-              </div>
-
-              <div class="col-md-6">
-                <label for="image.filename" class="form-label">Image filename</label>
-                <input type="text" id="image.filename" name="image[filename]" class="form-control" placeholder="myimage.jpg" required>
-              </div>
-            </div>
-
-            <div class="mb-3 mt-3">
-              <label for="image.url" class="form-label">Image URL</label>
-              <input type="url" id="image.url" name="image[url]" class="form-control" placeholder="https://example.com/image.jpg" required>
-              <div class="invalid-feedback">Provide a valid image URL.</div>
-            </div>
-
-            <div class="d-flex gap-2 justify-content-between align-items-center mt-4">
-              <a href="/listings" class="btn btn-outline-secondary">Cancel</a>
-              <button type="submit" class="btn btn-primary px-4">Create listing</button>
-            </div>
-          </form>
-        </div>
+        <div class="bg-secondary" style="width:40px;height:2px;opacity:0.3;margin:0 8px;"></div>
+        
+        <div class="rounded-pill bg-light text-muted border d-flex align-items-center justify-content-center" style="width:28px;height:28px;font-size:12px;font-weight:700;">3</div>
+        <span class="fs-6 fw-semi text-muted">Publish</span>
       </div>
+    </div>
+
+    <div class="listing-form-card">
+      <form action="/listings" method="POST" novalidate class="needs-validation">
+
+        <!-- STEP 1: BASICS -->
+        <div class="form-section-label">Basics</div>
+        
+        <div class="mb-3">
+          <label for="title" class="form-label">Property Title</label>
+          <input type="text" id="title" name="title" class="form-control form-control-lg fw-bold" placeholder="e.g. Cozy apartment in city center" required>
+          <div class="invalid-feedback">Title is required.</div>
+        </div>
+
+        <div class="mb-4 position-relative">
+          <label for="description" class="form-label">Description</label>
+          <textarea id="description" name="description" class="form-control" rows="4" placeholder="Describe the atmosphere, features, and neighborhood..." required oninput="document.getElementById('charCount').textContent = this.value.length"></textarea>
+          <div class="text-end text-muted mt-1" style="font-size:0.75rem;"><span id="charCount">0</span> / 500</div>
+          <div class="invalid-feedback">Description is required.</div>
+        </div>
+
+        <!-- STEP 2: LOCATION & PRICE -->
+        <div class="form-section-label mt-4">Location & Price</div>
+
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <label for="price" class="form-label">Price per night (USD)</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white border-end-0 text-muted">$</span>
+              <input type="number" id="price" name="price" class="form-control border-start-0 ps-0" placeholder="150" min="1" required>
+              <div class="invalid-feedback">Enter a valid price.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="location" class="form-label">City / Coordinates</label>
+            <input type="text" id="location" name="location" class="form-control" placeholder="e.g. Bengaluru, India" required>
+            <div class="invalid-feedback">Location is required.</div>
+          </div>
+          <div class="col-md-6">
+            <label for="country" class="form-label">Country</label>
+            <input type="text" id="country" name="country" class="form-control" placeholder="e.g. India" required>
+            <div class="invalid-feedback">Country is required.</div>
+          </div>
+        </div>
+
+        <div class="wl-divider"></div>
+
+        <!-- STEP 3: PHOTOS -->
+        <div class="form-section-label">Cover Photo</div>
+        
+        <div class="mb-3 d-none">
+          <!-- Hidden but required by schema if not adapted -->
+          <label for="image.filename" class="form-label">Image filename</label>
+          <input type="text" id="image.filename" name="image[filename]" class="form-control" value="listing-photo">
+        </div>
+
+        <div class="mb-4">
+          <div class="img-upload-area p-4" id="urlInputBox">
+            <i class="fa-solid fa-image"></i>
+            <h5 class="mb-1">Property Cover Image</h5>
+            <p class="mb-3 text-muted" style="font-size:0.85rem;">Provide a public image URL showcasing your location.</p>
+            <input type="url" id="image.url" name="image[url]" class="form-control text-center mx-auto" style="max-width:340px;" placeholder="https://images.unsplash.com/..." required>
+            <div class="invalid-feedback">Provide a valid image URL.</div>
+          </div>
+          <div class="img-preview" id="urlImgPreview" style="display: none; box-shadow: var(--shadow-sm);"></div>
+        </div>
+
+        <!-- SUBMIT -->
+        <div class="d-flex justify-content-between align-items-center mt-5 pt-3 border-top">
+          <a href="/listings" class="btn btn-outline-secondary fw-semi"><i class="fa-solid fa-arrow-left me-2"></i>Cancel</a>
+          <button type="submit" class="btn btn-primary px-5 py-2 fw-bold text-uppercase" style="letter-spacing:1px; background:linear-gradient(135deg,var(--accent),#d80c3b); border:none;">Publish Listing</button>
+        </div>
+
+      </form>
     </div>
   </div>
 </div>
+
+<script>
+  // Simple URL image preview live-feedback
+  const urlInput = document.getElementById('image.url');
+  const previewDiv = document.getElementById('urlImgPreview');
+  if(urlInput && previewDiv) {
+    urlInput.addEventListener('input', (e) => {
+      const val = e.target.value;
+      if(val && val.startsWith('http')) {
+        previewDiv.innerHTML = `<img src="${val}" alt="Cover Match" onerror="this.style.display='none'">`;
+        previewDiv.style.display = 'block';
+      } else {
+        previewDiv.style.display = 'none';
+        previewDiv.innerHTML = '';
+      }
+    });
+  }
+</script>

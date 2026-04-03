@@ -1,122 +1,114 @@
 <% layout("layouts/boilerplate") %>
 
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-8 col-lg-6">
-      <div class="card shadow-sm">
-        <div class="card-header bg-warning text-dark">
-          <h4 class="mb-0">Update Listing</h4>
-        </div>
-        <div class="card-body">
-          <form class="needs-validation" novalidate action="/listings/<%= listing._id %>?_method=PUT" method="POST">
+<div class="container mb-5">
+  <div class="listing-form-wrap">
+    
+    <div class="mb-4 text-center">
+      <h2>Edit Listing</h2>
+      <p class="text-muted">Keep your property information up-to-date.</p>
+    </div>
 
-            <!-- Title -->
-            <div class="mb-3">
-              <label for="title" class="form-label">Title</label>
-              <input 
-                type="text" 
-                id="title" 
-                name="title" 
-                class="form-control" 
-                value="<%= listing.title %>" 
-                required>
-              <div class="valid-feedback">Looks good!</div>
-              <div class="invalid-feedback">Please provide a title.</div>
-            </div>
-
-            <!-- Description -->
-            <div class="mb-3">
-              <label for="description" class="form-label">Description</label>
-              <textarea 
-                id="description" 
-                name="description" 
-                class="form-control" 
-                rows="3" 
-                required><%= listing.description %></textarea>
-              <div class="valid-feedback">Looks good!</div>
-              <div class="invalid-feedback">Please provide a description.</div>
-            </div>
-
-            <!-- Price -->
-            <div class="mb-3">
-              <label for="price" class="form-label">Price per night</label>
-              <input 
-                type="number" 
-                id="price" 
-                name="price" 
-                class="form-control" 
-                value="<%= listing.price %>" 
-                required>
-              <div class="valid-feedback">Looks good!</div>
-              <div class="invalid-feedback">Please enter a valid price.</div>
-            </div>
-
-            <!-- Location -->
-            <div class="mb-3">
-              <label for="location" class="form-label">Location</label>
-              <input 
-                type="text" 
-                id="location" 
-                name="location" 
-                class="form-control" 
-                value="<%= listing.location %>" 
-                required>
-              <div class="valid-feedback">Looks good!</div>
-              <div class="invalid-feedback">Please provide a location.</div>
-            </div>
-
-            <!-- Image Filename -->
-            <div class="mb-3">
-              <label for="image.filename" class="form-label">Image Filename</label>
-              <input 
-                type="text" 
-                id="image.filename" 
-                name="image[filename]" 
-                class="form-control" 
-                value="<%= listing.image ? listing.image.filename : '' %>" 
-                required>
-              <div class="valid-feedback">Looks good!</div>
-              <div class="invalid-feedback">Please provide an image filename.</div>
-            </div>
-
-            <!-- Image URL -->
-            <div class="mb-3">
-              <label for="image.url" class="form-label">Image URL</label>
-              <input 
-                type="url" 
-                id="image.url" 
-                name="image[url]" 
-                class="form-control" 
-                value="<%= listing.image ? listing.image.url : '' %>" 
-                required>
-              <div class="valid-feedback">Looks good!</div>
-              <div class="invalid-feedback">Please provide a valid image URL.</div>
-            </div>
-
-            <!-- Submit Button -->
-            <div class="d-grid">
-              <button type="submit" class="btn btn-warning">Update Listing</button>
-            </div>
-
-          </form>
-        </div>
+    <!-- Edit mode indicator -->
+    <div class="alert alert-warning border-0 rounded-3 d-flex align-items-center gap-3 p-3 mb-4 mx-auto" style="max-width:700px; background-color: #fffbeb; color: #b45309;">
+      <i class="fa-solid fa-pen-to-square fs-4"></i>
+      <div>
+        <h6 class="mb-0 fw-bold">Update Mode</h6>
+        <span style="font-size: 0.85rem;">You are currently editing an existing listing. Changes will be live immediately.</span>
       </div>
+    </div>
+
+    <div class="listing-form-card">
+      <form class="needs-validation" novalidate action="/listings/<%= listing._id %>?_method=PUT" method="POST">
+
+        <!-- STEP 1: BASICS -->
+        <div class="form-section-label">Property Basics</div>
+        
+        <div class="mb-3">
+          <label for="title" class="form-label">Property Title</label>
+          <input type="text" id="title" name="title" class="form-control form-control-lg fw-bold" value="<%= listing.title %>" required>
+          <div class="invalid-feedback">Title is required.</div>
+        </div>
+
+        <div class="mb-4 position-relative">
+          <label for="description" class="form-label">Description</label>
+          <textarea id="description" name="description" class="form-control" rows="4" required oninput="document.getElementById('charCount').textContent = this.value.length"><%= listing.description %></textarea>
+          <div class="text-end text-muted mt-1" style="font-size:0.75rem;"><span id="charCount"><%= listing.description.length %></span> / 500</div>
+          <div class="invalid-feedback">Description is required.</div>
+        </div>
+
+        <div class="wl-divider"></div>
+
+        <!-- STEP 2: LOCATION & PRICE -->
+        <div class="form-section-label mt-4">Location & Pricing</div>
+
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <label for="price" class="form-label">Price per night (USD)</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white border-end-0 text-muted">$</span>
+              <input type="number" id="price" name="price" class="form-control border-start-0 ps-0" value="<%= listing.price %>" min="1" required>
+              <div class="invalid-feedback">Enter a valid price.</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="location" class="form-label">City / Coordinates</label>
+            <input type="text" id="location" name="location" class="form-control" value="<%= listing.location %>" required>
+            <div class="invalid-feedback">Location is required.</div>
+          </div>
+        </div>
+
+        <div class="wl-divider"></div>
+
+        <!-- STEP 3: PHOTOS -->
+        <div class="form-section-label">Cover Photo</div>
+        
+        <div class="mb-3 d-none">
+          <label for="image.filename" class="form-label">Image filename</label>
+          <input type="text" id="image.filename" name="image[filename]" class="form-control" value="<%= listing.image ? listing.image.filename : 'update-photo' %>">
+        </div>
+
+        <div class="mb-4">
+          <div class="img-upload-area p-4" id="urlInputBox">
+            <i class="fa-solid fa-camera-rotate text-accent"></i>
+            <h5 class="mb-1">Update Listing Image</h5>
+            <p class="mb-3 text-muted" style="font-size:0.85rem;">Modify the image URL below to update your cover photo.</p>
+            <input type="url" id="image.url" name="image[url]" class="form-control text-center mx-auto" style="max-width:380px;" value="<%= listing.image ? listing.image.url : '' %>" required>
+            <div class="invalid-feedback">Provide a valid image URL.</div>
+          </div>
+          
+          <!-- Current Image Preview -->
+          <div class="img-preview" id="urlImgPreview" style="display: block; box-shadow: var(--shadow-sm);">
+            <img src="<%= listing.image ? listing.image.url : '' %>" alt="Current listing photo" id="currImg" onerror="this.style.display='none'">
+          </div>
+        </div>
+
+        <!-- SUBMIT -->
+        <div class="d-flex justify-content-between align-items-center mt-5 pt-3 border-top">
+          <a href="/listings/<%= listing._id %>" class="btn btn-outline-secondary fw-semi"><i class="fa-solid fa-arrow-left me-2"></i>Cancel</a>
+          <button type="submit" class="btn btn-warning px-5 py-2 fw-bold text-dark text-uppercase" style="letter-spacing:1px; border:none; box-shadow: 0 4px 12px rgba(245, 166, 35, 0.3);">Save Changes</button>
+        </div>
+
+      </form>
     </div>
   </div>
 </div>
 
 <script>
-  (() => {
-    'use strict';
-    const forms = document.querySelectorAll('.needs-validation');
-    Array.from(forms).forEach(form => {
-      form.addEventListener('submit', event => {
-        if (!form.checkValidity()) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-        form.classList.add('was-validated');
-      }, false);
+  // Simple URL image preview live-feedback
+  const urlInput = document.getElementById('image.url');
+  const previewDiv = document.getElementById('urlImgPreview');
+  const currImg = document.getElementById('currImg');
+  
+  if(urlInput && previewDiv) {
+    urlInput.addEventListener('input', (e) => {
+      const val = e.target.value;
+      if(val && val.startsWith('http')) {
+        previewDiv.innerHTML = `<img src="${val}" alt="Cover Match" onerror="this.style.display='none'">`;
+        previewDiv.style.display = 'block';
+      } else {
+        previewDiv.style.display = 'none';
+        previewDiv.innerHTML = '';
+      }
     });
-  })();
+  }
 </script>
