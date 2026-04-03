@@ -9,6 +9,7 @@ const passport = require("passport") ;
 const LocalStrategy = require("passport-local") ;
 const User = require("./models/user.js") ;
 const flash = require("connect-flash") ;
+
 // const Review = require("./models/review.js");
 // const Listing = require("./models/listing.js");
 // const ejs = require('ejs') ;
@@ -136,6 +137,11 @@ app.get('/' , (req , res) => {
 app.use('/listings', listingRoutes);       // all listing routes
 app.use('/listings/:id/reviews', reviewRoutes); // nested review routes
 app.use('/', userRoutes); 
+
+// Feature Not Implemented Route
+app.get('/feature-not-implemented', (req, res) => {
+  res.render('feature_not_implemented.ejs');
+});
 
 
 // //setting up the index route
