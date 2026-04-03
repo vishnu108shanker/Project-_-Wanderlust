@@ -1,33 +1,40 @@
 <% layout("layouts/boilerplate") %>
 
-<div class="container mx-auto mt-10 max-w-md bg-white shadow-lg rounded-2xl p-6">
-  <h2 class="text-2xl font-bold text-center mb-6">Login</h2>
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <div class="auth-logo justify-content-center">
+      <i class="fa-solid fa-route fa-lg"></i>
+      <span class="brand-name">Graveller</span>
+    </div>
+    
+    <h2 class="text-center fw-bold">Welcome back</h2>
+    <p class="auth-subtitle text-center">Log in to book your next getaway.</p>
 
-  <form action="/login" method="POST" class="space-y-4">
-    <!-- Email -->
-    <div>
-      <label for="email" class="block text-sm font-medium">Email</label>
-      <input type="email" id="email" name="email" required
-        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-400">
+    <form action="/login" method="POST" class="needs-validation" novalidate>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email address</label>
+        <input type="email" id="email" name="email" class="form-control" placeholder="name@example.com" required autofocus>
+        <div class="invalid-feedback">Please enter a valid email.</div>
+      </div>
+
+      <div class="mb-4">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+        <div class="invalid-feedback">Please enter your password.</div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block py-2 fw-bold">Log in to Graveller</button>
+    </form>
+
+    <div class="auth-divider">or seamlessly log in with</div>
+
+    <div class="d-flex gap-3 mb-4">
+      <button class="btn btn-outline-secondary w-100 fw-semi py-2" type="button"><i class="fa-brands fa-google text-danger me-2"></i> Google</button>
+      <button class="btn btn-outline-secondary w-100 fw-semi py-2" type="button"><i class="fa-brands fa-apple me-2 fs-5" style="vertical-align:-2px;"></i> Apple</button>
     </div>
 
-    <!-- Password -->
-    <div>
-      <label for="password" class="block text-sm font-medium">Password</label>
-      <input type="password" id="password" name="password" required
-        class="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-400">
+    <div class="auth-footer">
+      Don't have an account? <a href="/signup">Sign up</a>
     </div>
-
-    <!-- Submit -->
-    <div>
-      <button type="submit"
-        class="w-full bg-blue-500 text-black font-semibold py-2 px-4 rounded hover:bg-blue-600">
-        Login
-      </button>
-    </div>
-  </form>
-
-  <p class="text-center text-sm text-gray-600 mt-4">
-    Don’t have an account? <a href="/signup" class="text-blue-500 hover:underline">Sign Up</a>
-  </p>
+  </div>
 </div>
