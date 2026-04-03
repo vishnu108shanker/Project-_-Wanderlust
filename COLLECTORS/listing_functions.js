@@ -69,23 +69,45 @@ module.exports.renderUpdateForm = async(req, res )=> {
 }
 
 module.exports.updatelisting = async (req, res, next) => {
-  const { id } = req.params; 
-  let listing = await Listing.findByIdAndUpdate(id, req.body, {
+  const { id } = req.params;
+  
+  let listing = await Listing.findById(id);
+  if(!listing) {
+    req.flash("error", "Listing not found");
+    return res.redirect("/listings");
+  }
+
+  // Admin access or Owner access
+  if(!listing.owner.equals(req.user._id) && req.user.email !== 'dev@gmail.com') {
+    req.flash("error", "You do not have permission to do that!");
+    return res.redirect(`/listings/${id}`);
+  }
+
+  listing = await Listing.findByIdAndUpdate(id, req.body, {
     new: true, // return updated document
     runValidators: true, // run mongoose validators
   });
-    req.flash("success", "Listing updated successfully");
+  
+  req.flash("success", "Listing updated successfully");
   res.redirect(`/listings/${listing._id}`);
 }
 
 module.exports.deleteListing = async (req, res) => {
   const { id } = req.params;
-  const listing = await Listing.findByIdAndDelete(id);
-
+  
+  const listing = await Listing.findById(id);
   if (!listing) {
     req.flash("error", "Listing not found");
     return res.redirect("/listings");
   }
+
+  // Admin access or Owner access
+  if(!listing.owner.equals(req.user._id) && req.user.email !== 'dev@gmail.com') {
+    req.flash("error", "You do not have permission to do that!");
+    return res.redirect(`/listings/${id}`);
+  }
+
+  await Listing.findByIdAndDelete(id);
 
   req.flash("success", "Listing deleted successfully");
   res.redirect("/listings");

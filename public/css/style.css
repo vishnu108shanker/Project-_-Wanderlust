@@ -265,6 +265,8 @@ nav.navbar.scrolled {
 .nav-menu-btn i { color: var(--gray-600); font-size: 14px; }
 
 /* Custom Dropdown Styling */
+.hover-bg-gray:hover { background-color: var(--gray-100); transition: background 0.2s ease; }
+
 .dropdown-menu {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08) !important;
   border: 1px solid var(--border) !important;
