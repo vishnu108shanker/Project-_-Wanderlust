@@ -1,100 +1,193 @@
 <% layout("layouts/boilerplate") %>
 
-<div class="container mt-5">
-
-  <!-- Listing Card -->
-  <div class="card shadow-lg mb-4">
-    <img 
-      src="<%= listing.image.url %>" 
-      class="card-img-top" 
-      alt="<%= listing.title %>" 
-      style="height: 400px; object-fit: cover; border-top-left-radius: .5rem; border-top-right-radius: .5rem;">
-
-    <div class="card-body">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="card-title fw-bold"><%= listing.title %></h2>
-        <span class="badge bg-primary fs-6">$<%= listing.price %> / night</span>
+<div class="container mt-4 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10">
+      
+      <!-- ── TITLE & META ──────────────────────────────────────── -->
+      <h1 class="listing-detail-title"><%= listing.title %></h1>
+      
+      <div class="listing-meta-row">
+        <span><i class="fa-solid fa-star text-warning"></i> 4.8 (120 reviews)</span>
+        <span>&middot;</span>
+        <span><i class="fa-solid fa-medal text-warning"></i> Superhost</span>
+        <span>&middot;</span>
+        <span class="text-decoration-underline"><%= listing.location %></span>
       </div>
 
-      <p class="card-text text-muted mb-2"><i class="fa-solid fa-location-dot me-1"></i><%= listing.location %></p>
-      <p class="card-text"><%= listing.description %></p>
-      <p class="text-muted"><i>Hosted by <%= listing.owner.username %></i></p>
-
-      <!-- Owner Actions -->
-      <% if(currentuser && currentuser._id.equals(listing.owner._id)) { %>
-      <div class="d-flex gap-2 mt-3">
-        <a href="/listings/<%= listing._id %>/update" class="btn btn-warning">Update</a>
-        <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST" class="d-inline">
-          <button type="submit" class="btn btn-danger">Delete</button>
-        </form>
+      <!-- ── HERO IMAGE ────────────────────────────────────────── -->
+      <div class="position-relative">
+        <img src="<%= listing.image.url %>" alt="<%= listing.title %>" class="listing-detail-img">
+        <button class="wishlist-btn rounded-circle bg-white shadow-sm p-2 position-absolute" style="top: 16px; right: 16px; color: var(--gray-800); opacity:1; transform:scale(1);" aria-label="Save">
+          <i class="fa-regular fa-heart fs-5"></i>
+        </button>
       </div>
-      <% } %>
+
+      <div class="row mt-4">
+        
+        <!-- ── MAIN CONTENT (Left) ─────────────────────────────── -->
+        <div class="col-12 col-md-8 pe-md-5">
+          
+          <div class="host-row">
+            <div class="host-avatar">
+              <%= listing.owner.username.charAt(0).toUpperCase() %>
+            </div>
+            <div class="host-info">
+              <div class="host-name">Hosted by <%= listing.owner.username %></div>
+              <div class="host-label">Superhost &middot; 4 years hosting</div>
+            </div>
+          </div>
+
+          <div class="listing-description">
+            <%= listing.description %>
+          </div>
+
+          <!-- Owner Actions -->
+          <% if(currentuser && currentuser._id.equals(listing.owner._id)) { %>
+            <div class="owner-actions">
+              <a href="/listings/<%= listing._id %>/update" class="btn btn-warning px-4">Edit Listing</a>
+              <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST" class="d-inline">
+                <button type="submit" class="btn btn-outline-danger px-4">Delete Listing</button>
+              </form>
+            </div>
+          <% } %>
+          
+        </div>
+
+        <!-- ── SIDEBAR (Right) ─────────────────────────────────── -->
+        <div class="col-12 col-md-4 mt-4 mt-md-0">
+          <div class="card shadow-sm border-0 sticky-top" style="top: 100px; border-radius: 16px;">
+            <div class="card-body p-4">
+              <div class="d-flex align-items-end gap-2 mb-3">
+                <h3 class="fw-bold mb-0 fs-2">$<%= listing.price %></h3>
+                <span class="text-muted pb-1">night</span>
+              </div>
+              
+              <div class="border rounded-3 mb-3">
+                <div class="d-flex border-bottom">
+                  <div class="p-2 border-end w-50">
+                    <div class="text-uppercase" style="font-size:10px; font-weight:700;">Check-in</div>
+                    <div class="text-muted fs-6">Add date</div>
+                  </div>
+                  <div class="p-2 w-50">
+                    <div class="text-uppercase" style="font-size:10px; font-weight:700;">Checkout</div>
+                    <div class="text-muted fs-6">Add date</div>
+                  </div>
+                </div>
+                <div class="p-2">
+                  <div class="text-uppercase" style="font-size:10px; font-weight:700;">Guests</div>
+                  <div class="text-muted fs-6">1 guest</div>
+                </div>
+              </div>
+
+              <button class="btn btn-primary btn-block py-3 fw-bold rounded-3" style="background: linear-gradient(to right, #E8184A, #D6095A); border:none;">
+                Check availability
+              </button>
+            </div>
+          </div>
+        </div>
+        
+      </div> <!-- End Row -->
+
+      <div class="wl-divider"></div>
+
+      <!-- ── MAP ───────────────────────────────────────────────── -->
+      <div>
+        <h3 class="mb-3 fw-bold">Where you'll be</h3>
+        <p class="text-muted"><%= listing.location %></p>
+        <div id="listing-map" data-lat="<%= coords.lat %>" data-lng="<%= coords.lng %>"></div>
+      </div>
+
+      <div class="wl-divider"></div>
+
+      <!-- ── REVIEWS SECTION ───────────────────────────────────── -->
+      <div>
+        <h3 class="mb-4 fw-bold"><i class="fa-solid fa-star"></i> 4.8 &middot; Reviews</h3>
+
+        <% if(currentuser && currentuser._id){ %>
+          <div class="review-form-card">
+            <h4>Leave a Review</h4>
+            <form action="/listings/<%= listing._id %>/reviews" method="POST" class="needs-validation" novalidate>
+              
+              <div class="mb-3">
+                <label class="form-label mb-1">Your Rating</label>
+                <div class="star-select">
+                  <input type="radio" id="star5" name="rating" value="5" required>
+                  <label for="star5" title="5 stars"><i class="fa-solid fa-star"></i></label>
+                  
+                  <input type="radio" id="star4" name="rating" value="4">
+                  <label for="star4" title="4 stars"><i class="fa-solid fa-star"></i></label>
+                  
+                  <input type="radio" id="star3" name="rating" value="3">
+                  <label for="star3" title="3 stars"><i class="fa-solid fa-star"></i></label>
+                  
+                  <input type="radio" id="star2" name="rating" value="2">
+                  <label for="star2" title="2 stars"><i class="fa-solid fa-star"></i></label>
+                  
+                  <input type="radio" id="star1" name="rating" value="1">
+                  <label for="star1" title="1 star"><i class="fa-solid fa-star"></i></label>
+                </div>
+                <div class="invalid-feedback d-block mt-0" style="display:none;">Please select a rating above.</div>
+              </div>
+
+              <div class="mb-3">
+                <label for="comment" class="form-label">Share your experience</label>
+                <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="What was it like?" required></textarea>
+                <div class="invalid-feedback">Please enter your review.</div>
+              </div>
+
+              <button type="submit" class="btn btn-outline-secondary fw-bold rounded-pill px-4">Submit Review</button>
+            </form>
+          </div>
+        <% } else { %>
+          <div class="alert bg-white border rounded-3 p-4 text-center shadow-sm">
+            Please <a href="/login" class="fw-bold text-accent text-decoration-none">log in</a> to leave a review.
+          </div>
+        <% } %>
+
+        <!-- Reviews Grid -->
+        <% if (listing.reviews.length === 0) { %>
+          <p class="text-muted">No reviews yet. Be the first to write one!</p>
+        <% } else { %>
+          <div class="row row-cols-1 row-cols-md-2 g-4 mt-2">
+            <% listing.reviews.forEach(r => { %>
+              <div class="col">
+                <div class="review-card h-100">
+                  
+                  <div class="review-author">
+                    <div class="review-avatar">
+                      <%= r.author.username.charAt(0) %>
+                    </div>
+                    <div>
+                      <div class="review-name"><%= r.author.username %></div>
+                      <div class="review-stars">
+                        <% for(let i=0; i<r.rating; i++) { %>
+                          <i class="fa-solid fa-star"></i>
+                        <% } %>
+                        <% for(let i=r.rating; i<5; i++) { %>
+                          <i class="fa-regular fa-star text-muted" style="opacity:0.3"></i>
+                        <% } %>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="review-comment">
+                    <%= r.comment %>
+                  </div>
+
+                  <% if(currentuser && currentuser._id.equals(r.author._id)) { %>
+                    <form action="/listings/<%= listing._id %>/reviews/<%= r._id %>?_method=DELETE" method="POST" class="mt-3">
+                      <button class="btn btn-sm text-decoration-underline text-danger p-0 border-0 bg-transparent fw-semi">Delete</button>
+                    </form>
+                  <% } %>
+                  
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        <% } %>
+      </div>
+
     </div>
   </div>
-
-  <!-- Map -->
-  <div id="listing-map" data-lat="<%= coords.lat %>" data-lng="<%= coords.lng %>"></div>
-
-  <!-- Review Section -->
-  <% if(currentuser && currentuser._id){ %>
-  <div class="card shadow-sm mt-5 p-4">
-    <h4 class="mb-3">Leave a Review</h4>
-    <form action="/listings/<%= listing._id %>/reviews" method="POST" class="needs-validation" novalidate>
-      
-      <!-- Rating -->
-      <div class="mb-3">
-        <label for="rating" class="form-label">Rating</label>
-        <select class="form-select" id="rating" name="rating" required>
-          <option value="" selected disabled>Choose...</option>
-          <option value="5">⭐⭐⭐⭐⭐ (5)</option>
-          <option value="4">⭐⭐⭐⭐ (4)</option>
-          <option value="3">⭐⭐⭐ (3)</option>
-          <option value="2">⭐⭐ (2)</option>
-          <option value="1">⭐ (1)</option>
-        </select>
-        <div class="invalid-feedback">Please provide a rating.</div>
-      </div>
-
-      <!-- Comment -->
-      <div class="mb-3">
-        <label for="comment" class="form-label">Your Review</label>
-        <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
-        <div class="invalid-feedback">Please enter a review comment.</div>
-      </div>
-
-      <button type="submit" class="btn btn-primary">Submit Review</button>
-    </form>
-  </div>
-  <% } else { %>
-  <div class="alert alert-info mt-4 text-center">
-    Please <a href="/login" class="fw-bold">log in</a> to leave a review.
-  </div>
-  <% } %>
-
-  <!-- Reviews List -->
-  <div class="card shadow-sm mt-5 p-4">
-    <h4 class="mb-3">Reviews</h4>
-
-    <% if (listing.reviews.length === 0) { %>
-      <p class="text-muted">No reviews yet. Be the first to write one!</p>
-    <% } else { %>
-      <ul class="list-group list-group-flush">
-        <% listing.reviews.forEach(r => { %>
-          <li class="list-group-item d-flex justify-content-between align-items-start">
-            <div>
-              <h6 class="fw-bold mb-1"><%= r.author.username %></h6>
-              <span class="text-warning">⭐ <%= r.rating %></span>
-              <p class="mb-0"><%= r.comment %></p>
-            </div>
-            <% if(currentuser && currentuser._id.equals(r.author._id)) { %>
-            <form action="/listings/<%= listing._id %>/reviews/<%= r._id %>?_method=DELETE" method="POST" class="ms-3">
-              <button class="btn btn-sm btn-outline-danger">Delete</button>
-            </form>
-            <%}%>
-          </li>
-        <% }) %>
-      </ul>
-    <% } %>
-  </div>
-
 </div>
