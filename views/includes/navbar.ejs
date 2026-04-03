@@ -1,63 +1,75 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
-  <div class="container-fluid">
-    <!-- Airbnb-style Logo -->
-    <a class="navbar-brand d-flex align-items-center" href="/listings">
-      <i class="fa-solid fa-compass fa-2x text-danger me-2"></i>
-      <span class="fw-bold fs-5">WanderLust</span>
+<nav class="navbar navbar-expand-lg" id="mainNavbar">
+  <div class="container-fluid px-4">
+
+    <!-- ── Brand ─────────────────────────────────────────── -->
+    <a class="navbar-brand d-flex align-items-center gap-2" href="/listings" id="navBrand">
+      <i class="fa-solid fa-route fa-lg"></i>
+      <span class="brand-name">Graveller</span>
     </a>
 
-    <!-- Toggler for mobile -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <!-- ── Mobile toggler ────────────────────────────────── -->
+    <button class="navbar-toggler border-0 shadow-none" type="button"
+      data-bs-toggle="collapse" data-bs-target="#navCollapse"
+      aria-controls="navCollapse" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Navbar Links -->
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      
-      <!-- Left side: Search bar -->
-      <form class="d-flex mx-auto" style="max-width: 600px;">
-        <input class="form-control me-2" type="search" placeholder="Search destinations" aria-label="Search">
-        <button class="btn btn-outline-secondary" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+    <!-- ── Collapsible content ────────────────────────────── -->
+    <div class="collapse navbar-collapse" id="navCollapse">
+
+      <!-- ── Centre: Search pill ──────────────────────────── -->
+      <form class="d-flex mx-auto" action="/listings" method="GET" id="navSearchForm">
+        <div class="navbar-search">
+          <i class="fa-solid fa-magnifying-glass" style="color:var(--gray-400);font-size:13px;flex-shrink:0;"></i>
+          <input
+            type="text"
+            name="search"
+            placeholder="Search destinations…"
+            aria-label="Search destinations"
+            id="navSearchInput"
+          >
+          <button type="submit" class="search-btn" aria-label="Search">
+            <i class="fa-solid fa-magnifying-glass" style="font-size:13px;"></i>
+          </button>
+        </div>
       </form>
 
-      <!-- Right side: Links and buttons -->
-      <ul class="navbar-nav ms-auto align-items-center">
+      <!-- ── Right: Actions ───────────────────────────────── -->
+      <ul class="navbar-nav ms-auto align-items-center gap-1">
 
-          <!-- Language / Currency (static button for now) -->
-   <li class="nav-item me-2">
-  <a class="btn btn-outline-secondary" href="/listings">Home</a>
-</li>
-
-
-        <!-- Airbnb Your Home / Become a Host -->
-        <li class="nav-item me-2">
-          <a class="btn btn-outline-secondary rounded-pill" href="/listings/new">Wanderlust your home</a>
-        </li>
-
-      
-        <!-- SignUp / Login (if not logged in) -->
-        <% if(!currentuser){ %>
-        <li class="nav-item me-2">
-          <a class="btn btn-primary rounded-pill px-3" href="/signup">Sign Up</a>
-        </li>
-        <li class="nav-item me-2">
-          <a class="btn btn-outline-primary rounded-pill px-3" href="/login">Login</a>
-        </li>
-        <%}%>
-
-        <!-- Logout (if logged in) -->
-        <% if(currentuser){ %>
+        <!-- Host your home -->
         <li class="nav-item">
-          <a class="btn btn-outline-danger rounded-pill px-3" href="/logout">Logout</a>
+          <a href="/listings/new" class="nav-link nav-btn nav-btn-ghost d-none d-lg-block" id="navHostLink">
+            Gravel your home
+          </a>
         </li>
-        <%}%>
 
-        <!-- Profile / Menu Icon -->
-        <li class="nav-item ms-2">
-          <button class="btn btn-outline-secondary rounded-circle"><i class="fa-solid fa-bars"></i></button>
-        </li>
+        <% if (!currentuser) { %>
+          <!-- Sign Up -->
+          <li class="nav-item">
+            <a href="/signup" class="nav-btn nav-btn-primary" id="navSignupBtn">Sign up</a>
+          </li>
+          <!-- Login -->
+          <li class="nav-item">
+            <a href="/login" class="nav-btn nav-btn-outline" id="navLoginBtn">Log in</a>
+          </li>
+        <% } else { %>
+          <!-- Logged-in user pill -->
+          <li class="nav-item">
+            <div class="nav-menu-btn" id="navUserMenu">
+              <i class="fa-solid fa-bars"></i>
+              <div class="user-avatar-mini" aria-label="User menu">
+                <%= currentuser.username.charAt(0).toUpperCase() %>
+              </div>
+            </div>
+          </li>
+          <!-- Logout -->
+          <li class="nav-item">
+            <a href="/logout" class="nav-btn nav-btn-danger" id="navLogoutBtn">Log out</a>
+          </li>
+        <% } %>
 
       </ul>
-    </div>
-  </div>
+    </div><!-- /collapse -->
+  </div><!-- /container -->
 </nav>
