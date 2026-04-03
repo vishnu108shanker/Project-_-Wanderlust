@@ -1,25 +1,26 @@
 <% layout("layouts/boilerplate") %>
 
-<div class="container text-center mt-5">
-  
-    <h1 class="display-1 text-danger"><%= status %></h1>
-  
-  <% if (status === 404) { %>
-    
-    <h2 class="mb-4">Oops! Page not found</h2>
-    
-    <p>The page you’re looking for doesn’t exist.</p>
+<div class="error-wrapper">
 
-    <a href="/listings" class="btn btn-primary">Go Home</a>
+  <div class="error-code">
+    <%= typeof status !== 'undefined' ? status : '500' %>
+  </div>
 
+  <% if (typeof status !== 'undefined' && status === 404) { %>
+    <h1 class="error-title">Oops! Looks like you're lost.</h1>
+    <p class="error-msg">We can't seem to find the page you're looking for. It might have been removed, had its name changed, or is temporarily unavailable.</p>
   <% } else { %>
-  
-    <h2 class="mb-4">Something went wrong</h2>
-  
-    <p><%= message %></p>
-  
-    <a href="/" class="btn btn-secondary">Back to Safety</a>
-  
-    <% } %>
+    <h1 class="error-title">Something went wrong</h1>
+    <p class="error-msg"><%= typeof message !== 'undefined' ? message : 'An unexpected error occurred on our end. Please try again later.' %></p>
+  <% } %>
+
+  <div class="d-flex gap-3 mt-2">
+    <a href="/listings" class="btn btn-primary px-4 py-2 fw-bold text-uppercase" style="letter-spacing:1px; border-radius: 999px;">
+      <i class="fa-solid fa-house me-2"></i> Go Home
+    </a>
+    <button onclick="history.back()" class="btn btn-outline-secondary px-4 py-2 fw-semi" style="border-radius: 999px;">
+      Go Back
+    </button>
+  </div>
 
 </div>
