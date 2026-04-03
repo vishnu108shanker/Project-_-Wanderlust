@@ -50,7 +50,14 @@
 
   <!-- ── LISTINGS GRID ─────────────────────────────────────── -->
   <div class="section-header">
-    <h2>Explore Stays</h2>
+    <% if (typeof searchQuery !== 'undefined' && searchQuery) { %>
+      <div class="d-flex align-items-center mb-1">
+        <h2 class="mb-0 fs-3">Search results for "<%= searchQuery %>"</h2>
+        <a href="/listings" class="btn btn-sm btn-outline-secondary ms-3 rounded-pill fw-semi px-3">Clear search</a>
+      </div>
+    <% } else { %>
+      <h2>Explore Stays</h2>
+    <% } %>
   </div>
 
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mt-1 mb-5">
@@ -85,9 +92,13 @@
     <% } %>
 
     <% if (!datum || datum.length === 0) { %>
-      <div class="col-12 text-center py-5">
-        <h3 class="text-muted">No stays found.</h3>
-        <p>Try exploring another category!</p>
+      <div class="col-12 text-center py-5 mt-4 w-100 placeholder-wrap">
+        <i class="fa-solid fa-magnifying-glass fa-3x text-muted mb-3 opacity-50"></i>
+        <h3 class="fw-bold text-dark">No exact matches found</h3>
+        <p class="text-muted" style="font-size: 1.1rem;">Try changing your keywords or exploring other regions.</p>
+        <% if (typeof searchQuery !== 'undefined' && searchQuery) { %>
+          <a href="/listings" class="btn btn-dark px-4 py-2 mt-2 rounded-pill fw-semi">Remove all filters</a>
+        <% } %>
       </div>
     <% } %>
   </div>

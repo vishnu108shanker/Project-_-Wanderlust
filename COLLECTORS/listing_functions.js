@@ -4,11 +4,25 @@ const ExpressError = require("../utils/ExpressError");
 const { geocodeAddress } = require('../utils/geocode');
 
 module.exports.index = async (req, res) => {
-  console.log('Seeding DB and fetching data...');
-  // await initDB();  // clears old and inserts new sample data
-  let datum = await Listing.find({})  // fetch fresh data
-  // res.send(datum );  // send as JSON
-  res.render('index.ejs' , {datum}) ;
+  console.log('Fetching listings data...');
+  const searchQuery = req.query.search;
+  let queryObj = {};
+
+  if (searchQuery) {
+    // Escape regex characters just in case
+    const safeQuery = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(safeQuery, 'i');
+    queryObj = {
+      $or: [
+        { title: regex },
+        { location: regex },
+        { country: regex }
+      ]
+    };
+  }
+
+  let datum = await Listing.find(queryObj);
+  res.render('index.ejs', { datum, searchQuery });
 }
 
 module.exports.renderNewForm = (req, res) => {
