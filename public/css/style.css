@@ -717,6 +717,36 @@ textarea.form-control { resize: vertical; min-height: 110px; }
   font-size: 0.95rem;
 }
 
+/* Custom Social Sign-in Buttons */
+.btn-google {
+  background-color: #fff;
+  border: 1px solid var(--border-strong);
+  color: var(--gray-800);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.btn-google:hover {
+  background-color: var(--gray-50);
+  border-color: var(--gray-400);
+  color: var(--gray-900);
+}
+
+.btn-apple {
+  background-color: #000;
+  border: 1px solid #000;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.btn-apple:hover {
+  background-color: #333;
+  color: #fff;
+  border-color: #333;
+}
 
 /* ── 12. SHOW PAGE ────────────────────────────────────────── */
 .listing-detail-img {
