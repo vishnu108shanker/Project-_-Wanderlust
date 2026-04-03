@@ -1,75 +1,68 @@
-<nav class="navbar navbar-expand-lg" id="mainNavbar">
-  <div class="container-fluid px-4">
+<nav class="navbar" id="mainNavbar">
+  <div class="container-fluid px-2 px-sm-4 d-flex align-items-center justify-content-between">
 
-    <!-- ── Brand ─────────────────────────────────────────── -->
+    <!-- ── Brand (Left) ──────────────────────────────────────── -->
     <a class="navbar-brand d-flex align-items-center gap-2" href="/listings" id="navBrand">
       <i class="fa-solid fa-route fa-lg"></i>
-      <span class="brand-name">Graveller</span>
+      <span class="brand-name d-none d-md-block">Graveller</span>
     </a>
 
-    <!-- ── Mobile toggler ────────────────────────────────── -->
-    <button class="navbar-toggler border-0 shadow-none" type="button"
-      data-bs-toggle="collapse" data-bs-target="#navCollapse"
-      aria-controls="navCollapse" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <!-- ── Search Box (Center) ─────────────────────────────── -->
+    <form class="d-flex mx-auto" style="flex:1; max-width:400px; padding:0 12px;" action="/listings" method="GET" id="navSearchForm">
+      <div class="navbar-search w-100 m-0">
+        <i class="fa-solid fa-magnifying-glass ps-2" style="color:var(--gray-400);font-size:13px;flex-shrink:0;"></i>
+        <input type="text" name="search" placeholder="Search destinations…" aria-label="Search destinations" id="navSearchInput" style="height:44px; margin-left:4px;">
+        <button type="submit" class="search-btn" aria-label="Search">
+          <i class="fa-solid fa-magnifying-glass" style="font-size:13px;"></i>
+        </button>
+      </div>
+    </form>
 
-    <!-- ── Collapsible content ────────────────────────────── -->
-    <div class="collapse navbar-collapse" id="navCollapse">
+    <!-- ── User Profile & Profile Pill (Right) ──────────────── -->
+    <div class="d-flex align-items-center justify-content-end gap-1 gap-md-2" style="min-width: 140px;">
+      
+      <!-- Host link hidden on mobile -->
+      <a href="/listings/new" class="nav-link nav-btn nav-btn-ghost d-none d-lg-block fw-semi text-dark">Gravel your home</a>
 
-      <!-- ── Centre: Search pill ──────────────────────────── -->
-      <form class="d-flex mx-auto" action="/listings" method="GET" id="navSearchForm">
-        <div class="navbar-search">
-          <i class="fa-solid fa-magnifying-glass" style="color:var(--gray-400);font-size:13px;flex-shrink:0;"></i>
-          <input
-            type="text"
-            name="search"
-            placeholder="Search destinations…"
-            aria-label="Search destinations"
-            id="navSearchInput"
-          >
-          <button type="submit" class="search-btn" aria-label="Search">
-            <i class="fa-solid fa-magnifying-glass" style="font-size:13px;"></i>
-          </button>
-        </div>
-      </form>
-
-      <!-- ── Right: Actions ───────────────────────────────── -->
-      <ul class="navbar-nav ms-auto align-items-center gap-1">
-
-        <!-- Host your home -->
-        <li class="nav-item">
-          <a href="/listings/new" class="nav-link nav-btn nav-btn-ghost d-none d-lg-block" id="navHostLink">
-            Gravel your home
-          </a>
-        </li>
-
-        <% if (!currentuser) { %>
-          <!-- Sign Up -->
-          <li class="nav-item">
-            <a href="/signup" class="nav-btn nav-btn-primary" id="navSignupBtn">Sign up</a>
-          </li>
-          <!-- Login -->
-          <li class="nav-item">
-            <a href="/login" class="nav-btn nav-btn-outline" id="navLoginBtn">Log in</a>
-          </li>
-        <% } else { %>
-          <!-- Logged-in user pill -->
-          <li class="nav-item">
-            <div class="nav-menu-btn" id="navUserMenu">
-              <i class="fa-solid fa-bars"></i>
-              <div class="user-avatar-mini" aria-label="User menu">
-                <%= currentuser.username.charAt(0).toUpperCase() %>
-              </div>
+      <!-- Profile Interactive Pill -->
+      <div class="dropdown">
+        <div class="nav-menu-btn" data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer;">
+          <i class="fa-solid fa-bars ps-1"></i>
+          
+          <% if (typeof currentuser !== 'undefined' && currentuser) { %>
+            <div class="user-avatar-mini" style="background:#2d2d2d;"><%= currentuser.username.charAt(0).toUpperCase() %></div>
+          <% } else { %>
+            <div class="user-avatar-mini" style="background:var(--gray-500);">
+              <i class="fa-solid fa-user text-white" style="font-size:12px;"></i>
             </div>
-          </li>
-          <!-- Logout -->
-          <li class="nav-item">
-            <a href="/logout" class="nav-btn nav-btn-danger" id="navLogoutBtn">Log out</a>
-          </li>
-        <% } %>
+          <% } %>
 
-      </ul>
-    </div><!-- /collapse -->
+        </div>
+        
+        <!-- The actual dropdown menu -->
+        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2" style="border-radius:12px; min-width: 240px; padding: 8px 0;">
+          
+          <% if (typeof currentuser === 'undefined' || !currentuser) { %>
+            <li><a class="dropdown-item fw-bold" href="/signup">Sign up</a></li>
+            <li><a class="dropdown-item" href="/login">Log in</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/listings/new">Gravel your home</a></li>
+            <li><a class="dropdown-item" href="#">Help</a></li>
+          
+          <% } else { %>
+            <li><a class="dropdown-item fw-bold" href="#">Messages</a></li>
+            <li><a class="dropdown-item fw-bold" href="#">Trips</a></li>
+            <li><a class="dropdown-item fw-bold" href="#">Wishlists</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/listings/new">Gravel your home</a></li>
+            <li><a class="dropdown-item" href="#">Account</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/logout">Log out</a></li>
+          <% } %>
+          
+        </ul>
+      </div>
+
+    </div>
   </div><!-- /container -->
 </nav>
